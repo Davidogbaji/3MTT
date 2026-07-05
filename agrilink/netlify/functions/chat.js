@@ -14,18 +14,16 @@ Rules:
 
 const STORAGE_SYSTEM_PROMPT = `You are AgriLink's post-harvest storage assistant, helping Nigerian smallholder farmers reduce crop spoilage and loss before sale.
 
-Give practical, low-cost, locally feasible storage and preservation advice for whatever crop the farmer names, in under 80 words, simple language, no jargon. Focus on affordable methods (e.g. hermetic bags, proper drying, shade, ventilation) rather than expensive equipment they likely can't access.`;
+Give practical, low-cost, locally feasible storage and preservation advice for whatever crop the farmer names, in under 80 words, simple language, no jargon. Focus on affordable methods rather than expensive equipment they likely can't access.`;
 
-export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    res.status(405).json({ error: "Method not allowed" });
-    return;
+exports.handler = async (event) => {
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, body: JSON.stringify({ error: "Method not allowed" }) };
   }
 
-  const { messages, mode } = req.body || {};
+  const { messages, mode } = JSON.parse(event.body || "{}");
   if (!messages || !Array.isArray(messages)) {
-    res.status(400).json({ error: "messages array is required" });
-    return;
+    return { statusCode: 400, body: JSON.stringify({ error: "messages array is required" }) };
   }
 
   const system = mode === "storage" ? STORAGE_SYSTEM_PROMPT : PRICE_SYSTEM_PROMPT;
@@ -48,8 +46,7 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const errText = await response.text();
-      res.status(response.status).json({ error: "Anthropic API error", detail: errText });
-      return;
+      return { statusCode: response.status, body: JSON.stringify({ error: "Anthropic API error", detail: errText }) };
     }
 
     const data = await response.json();
@@ -58,8 +55,8 @@ export default async function handler(req, res) {
       .filter(Boolean)
       .join("\n");
 
-    res.status(200).json({ text });
+    return { statusCode: 200, body: JSON.stringify({ text }) };
   } catch (err) {
-    res.status(500).json({ error: "Server error", detail: String(err) });
+    return { statusCode: 500, body: JSON.stringify({ error: "Server error", detail: String(err) }) };
   }
-}
+};
