@@ -1,0 +1,60 @@
+:root {
+  --green: #1F5C3F;
+  --green-dark: #143D2A;
+  --green-light: #E4EDE3;
+  --gold: #D9A441;
+  --gold-dark: #B8842A;
+  --bg: #F5F6EF;
+  --card: #FFFFFF;
+  --ink: #20281F;
+  --ink-soft: #5C6B57;
+  --border: #DEE4D6;
+  --red: #B84438;
+  --red-bg: #FAE6E3;
+  --amber: #C97A16;
+  --amber-bg: #FBEED9;
+  --green-ok: #3E8E5A;
+  --green-ok-bg: #E5F3EA;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Inter", sans-serif;
+}
+
+h1, h2, h3, .display {
+  font-family: "Space Grotesk", sans-serif;
+}
+
+button {
+  font-family: inherit;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #93A38C;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #C7D3BE;
+  border-radius: 8px;
+}
